@@ -5,7 +5,7 @@ const { stringify } = require('csv-stringify/sync');
 class PostRepository {
     constructor() {
         this.filePath = './data/posts.csv';
-        this.headers = ['id', 'title', 'content', 'author', 'createdAt'];
+        this.headers = ['id','title','href','description','category','imageUrl','favorite','review'];
     }
 
     async initialize() {
@@ -27,14 +27,18 @@ class PostRepository {
     async createPost(post) {
         try {
             const posts = await this.getAllPosts();
+            // id,title,href,description,category,imageUrl,favorite,review
             const newId = posts.length > 0 ? Math.max(...posts.map(p => p.id)) + 1 : 1;
             
             const newPost = {
-                id: newId,
+                id: this.padWithZeroes(newId),
                 title: post.title,
-                content: post.content,
-                author: post.author,
-                createdAt: new Date().toISOString()
+                href: post.href,
+                description: post.description,
+                category: post.category,
+                imageUrl: post.imageUrl,
+                favorite: false,
+                review: 0
             };
 
             posts.push(newPost);
@@ -50,7 +54,7 @@ class PostRepository {
             const posts = await this.getAllPosts();
             return posts.find(post => post.id === parseInt(id)) || null;
         } catch (error) {
-            throw new Error('Failed to get post');
+            throw new Error(`Failed to get post: ${JSON.stringify(this.getErrorDetails(error), null, 2)}`);
         }
     }
 
@@ -66,7 +70,7 @@ class PostRepository {
             await this.savePosts(filteredPosts);
             return true;
         } catch (error) {
-            throw new Error('Failed to delete post');
+            throw new Error(`Failed to delete post: ${JSON.stringify(this.getErrorDetails(error), null, 2)}`);
         }
     }
 
@@ -88,7 +92,7 @@ class PostRepository {
             await this.savePosts(posts);
             return posts[index];
         } catch (error) {
-            throw new Error('Failed to update post');
+            throw new Error(`Failed to update post: ${JSON.stringify(this.getErrorDetails(error), null, 2)}`);
         }
     }
 
@@ -105,7 +109,7 @@ class PostRepository {
                 id: parseInt(record.id)
             }));
         } catch (error) {
-            throw new Error('Failed to get posts');
+            throw new Error(`Failed to get posts: ${JSON.stringify(this.getErrorDetails(error), null, 2)}`);
         }
     }
 
@@ -114,8 +118,23 @@ class PostRepository {
             const csvContent = stringify(posts, { header: true, columns: this.headers });
             await fs.writeFile(this.filePath, csvContent);
         } catch (error) {
-            throw new Error('Failed to save posts');
+            throw new Error(`Failed to save posts: ${JSON.stringify(this.getErrorDetails(error), null, 2)}`);
         }
+    }
+
+    padWithZeroes(id) {
+        const digits = stringify(id).length;
+        const padding = 3 - digits;
+        return '0'.repeat(padding) + id;
+    }
+
+    getErrorDetails(error) {
+        return {
+            message: error.message,
+            stack: error.stack,
+            code: error.code, // Useful for file system errors
+            name: error.name
+        };
     }
 }
 

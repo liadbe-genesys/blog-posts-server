@@ -4,6 +4,7 @@ const PostRepository = require('./PostRepository');
 
 const app = express();
 const port = 3000;
+const postsRepo = new PostRepository();
 
 // Middleware
 app.use(bodyParser.json());
@@ -19,9 +20,7 @@ app.get('/posts', getAllPosts);
 // Route handler functions
 async function createPost(req, res) {
     try {
-        // TODO: Implement post creation logic
-        // Expected req.body to contain post data
-        res.status(201).json({ message: 'Post created successfully' });
+        res.status(201).json({ posts: JSON.stringify(posts) });
     } catch (error) {
         res.status(500).json({ error: 'Failed to create post' });
     }
@@ -30,8 +29,11 @@ async function createPost(req, res) {
 async function getPostById(req, res) {
     try {
         const postId = req.params.id;
-        // TODO: Implement logic to fetch post by ID
-        res.status(200).json({ message: 'Post retrieved successfully' });
+        const post = await postsRepo.getPostById(postId);
+        if (!post) {
+            return res.status(404).json({ error: 'Post not found' });
+        }
+        res.status(200).json({ post });
     } catch (error) {
         res.status(500).json({ error: 'Failed to retrieve post' });
     }
@@ -40,8 +42,8 @@ async function getPostById(req, res) {
 async function deletePost(req, res) {
     try {
         const postId = req.params.id;
-        // TODO: Implement post deletion logic
-        res.status(200).json({ message: 'Post deleted successfully' });
+        const deleted = await postsRepo.deletePost(postId);
+        res.status(200).json({ message: deleted ? 'Post deleted successfully': 'Post to delete not found' });
     } catch (error) {
         res.status(500).json({ error: 'Failed to delete post' });
     }
@@ -50,9 +52,11 @@ async function deletePost(req, res) {
 async function updatePost(req, res) {
     try {
         const postId = req.params.id;
+        const updatedPost = req.body;
+        const post = await postsRepo.updatePost(postId, updatedPost);
         // TODO: Implement post update logic
         // Expected req.body to contain updated post data
-        res.status(200).json({ message: 'Post updated successfully' });
+        res.status(200).json({ message: 'Post updated successfully', post });
     } catch (error) {
         res.status(500).json({ error: 'Failed to update post' });
     }
@@ -60,10 +64,10 @@ async function updatePost(req, res) {
 
 async function getAllPosts(req, res) {
     try {
-        // TODO: Implement logic to fetch all posts
-        res.status(200).json({ message: 'Posts retrieved successfully' });
+        const posts = await postsRepo.getAllPosts();
+        res.status(201).json({ posts });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to retrieve posts' });
+        res.status(500).json({ error: `Failed to get all posts. Got error: ${getErrorDetails(error)}` });
     }
 }
 
@@ -77,3 +81,12 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
+
+function getErrorDetails(error) {
+    return {
+        message: error.message,
+        stack: error.stack,
+        code: error.code, // Useful for file system errors
+        name: error.name
+    };
+}

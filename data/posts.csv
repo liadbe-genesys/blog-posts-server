@@ -1,0 +1,5 @@
+id,title,href,description,category,imageUrl,favorite,review
+001,Thinking in React,https://react.dev/learn/thinking-in-react,Getting familiar with React concepts,dev,https://science.nasa.gov/wp-content/uploads/2023/05/sun-cartoon-crop.png?w=4096&format=png&crop=1,false,3
+002,React App Starter,https://github.com/liadbe-genesys/react-app-starter,Hassle-free boilerplate to win the hackathon ,dev,https://picsum.photos/200?random=2,false,3
+003,Clone a Github Repository,https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository,Get the files to your laptop,dev,https://picsum.photos/200?random=3,false,3
+004,Bike Map Tel-Aviv,https://experience.arcgis.com/experience/0b4adbaac0b84c21af90f4ee4a397fe6,No more guessing bus ETAs,leisure,https://picsum.photos/200?random=4,false,3
