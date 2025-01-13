@@ -44,9 +44,9 @@ async function createPost(req, res) {
 
         // If validation passes, create the post
         const newPost = await postsRepo.createPost(post);
-        res.status(201).json({ post: newPost });
+        res.status(201).json({ ...newPost });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to create post' });
+        res.status(500).json({ error: `Failed to create post. Got error: ${JSON.stringify(getErrorDetails(error))}` });
     }
 }
 
@@ -57,7 +57,7 @@ async function getPostById(req, res) {
         if (!post) {
             return res.status(404).json({ error: 'Post not found' });
         }
-        res.status(200).json({ post });
+        res.status(200).json({ ...post });
     } catch (error) {
         res.status(500).json({ error: 'Failed to retrieve post' });
     }
@@ -88,7 +88,7 @@ async function updatePost(req, res) {
 async function getAllPosts(req, res) {
     try {
         const posts = await postsRepo.getAllPosts();
-        res.status(201).json({ posts });
+        res.status(201).json({ ...posts });
     } catch (error) {
         res.status(500).json({ error: `Failed to get all posts. Got error: ${getErrorDetails(error)}` });
     }

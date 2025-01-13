@@ -1,6 +1,5 @@
 const fs = require('fs').promises;
 const csv = require('csv-parse/sync');
-const { stringify } = require('csv-stringify/sync');
 
 class PostRepository {
     constructor() {
@@ -45,7 +44,7 @@ class PostRepository {
             await this.savePosts(posts);
             return newPost;
         } catch (error) {
-            throw new Error('Failed to create post');
+            throw new Error(`Failed to create post: ${JSON.stringify(this.getErrorDetails(error), null, 2)}`);
         }
     }
 
@@ -123,7 +122,7 @@ class PostRepository {
     }
 
     padWithZeroes(id) {
-        const digits = stringify(id).length;
+        const digits = id.toString().length;
         const padding = 3 - digits;
         return '0'.repeat(padding) + id;
     }
