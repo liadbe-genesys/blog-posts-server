@@ -88,7 +88,7 @@ async function updatePost(req, res) {
 async function getAllPosts(req, res) {
     try {
         const posts = await postsRepo.getAllPosts();
-        res.status(201).json({ ...posts });
+        res.status(201).json([ ...posts ]);
     } catch (error) {
         res.status(500).json({ error: `Failed to get all posts. Got error: ${getErrorDetails(error)}` });
     }
