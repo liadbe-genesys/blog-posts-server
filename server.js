@@ -23,7 +23,28 @@ app.get('/posts', getAllPosts);
 // Route handler functions
 async function createPost(req, res) {
     try {
-        res.status(201).json({ posts: JSON.stringify(posts) });
+        const requiredFields = ['title', 'href', 'description', 'category'];
+        const post = req.body;
+
+        // Check if all required fields exist and are not empty
+        const missingFields = requiredFields.filter(field => {
+            return !post[field] || post[field].trim() === '';
+        });
+
+        if (missingFields.length > 0) {
+            return res.status(400).json({
+                error: 'Missing required fields',
+                missingFields: missingFields
+            });
+        }
+
+        if (!post['imageUrl']) {
+            post['imageUrl'] = "https://picsum.photos/200";
+        }
+
+        // If validation passes, create the post
+        const newPost = await postsRepo.createPost(post);
+        res.status(201).json({ post: newPost });
     } catch (error) {
         res.status(500).json({ error: 'Failed to create post' });
     }
