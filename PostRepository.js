@@ -1,5 +1,6 @@
 const fs = require('fs').promises;
 const csv = require('csv-parse/sync');
+const { stringify } = require('csv-stringify/sync');
 
 class PostRepository {
     constructor() {
