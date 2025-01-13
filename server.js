@@ -39,7 +39,7 @@ async function createPost(req, res) {
         }
 
         if (!post['imageUrl']) {
-            post['imageUrl'] = "https://picsum.photos/200";
+            post['imageUrl'] = "https://picsum.photos/200?random=2";
         }
 
         // If validation passes, create the post
@@ -79,7 +79,7 @@ async function updatePost(req, res) {
         const updatedPost = req.body;
         const post = await postsRepo.updatePost(postId, updatedPost);
         // TODO: Implement post update logic
-        res.status(200).json({ message: 'Post updated successfully', post });
+        res.status(200).json({ ...post });
     } catch (error) {
         res.status(500).json({ error: 'Failed to update post' });
     }
