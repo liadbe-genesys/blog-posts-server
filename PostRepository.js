@@ -31,13 +31,13 @@ class PostRepository {
             const newId = posts.length > 0 ? Math.max(...posts.map(p => p.id)) + 1 : 1;
             
             const newPost = {
-                id: this.padWithZeroes(newId),
+                id: newId,
                 title: post.title,
                 href: post.href,
                 description: post.description,
                 category: post.category,
                 imageUrl: post.imageUrl,
-                favorite: false,
+                favorite: 'false',
                 review: 0
             };
 
@@ -120,12 +120,6 @@ class PostRepository {
         } catch (error) {
             throw new Error(`Failed to save posts: ${JSON.stringify(this.getErrorDetails(error), null, 2)}`);
         }
-    }
-
-    padWithZeroes(id) {
-        const digits = id.toString().length;
-        const padding = 3 - digits;
-        return '0'.repeat(padding) + id;
     }
 
     getErrorDetails(error) {
