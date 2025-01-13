@@ -1,8 +1,11 @@
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const PostRepository = require('./PostRepository');
 
 const app = express();
+app.use(cors());
+
 const port = 3000;
 const postsRepo = new PostRepository();
 
@@ -55,7 +58,6 @@ async function updatePost(req, res) {
         const updatedPost = req.body;
         const post = await postsRepo.updatePost(postId, updatedPost);
         // TODO: Implement post update logic
-        // Expected req.body to contain updated post data
         res.status(200).json({ message: 'Post updated successfully', post });
     } catch (error) {
         res.status(500).json({ error: 'Failed to update post' });
