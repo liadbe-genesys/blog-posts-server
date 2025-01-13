@@ -8,6 +8,7 @@ app.use(cors());
 
 const port = 3000;
 const postsRepo = new PostRepository();
+const requiredFields = ['title', 'href', 'description', 'category'];
 
 // Middleware
 app.use(bodyParser.json());
@@ -23,7 +24,6 @@ app.get('/posts', getAllPosts);
 // Route handler functions
 async function createPost(req, res) {
     try {
-        const requiredFields = ['title', 'href', 'description', 'category'];
         const post = req.body;
 
         // Check if all required fields exist and are not empty
@@ -77,7 +77,27 @@ async function updatePost(req, res) {
     try {
         const postId = req.params.id;
         const updatedPost = req.body;
+
+        // Check if all required fields exist and are not empty
+        const missingFields = requiredFields.filter(field => {
+            return !updatedPost[field] || updatedPost[field].trim() === '';
+        });
+
+        if (missingFields.length > 0) {
+            return res.status(400).json({
+                error: 'Missing required fields',
+                missingFields: missingFields
+            });
+        }
+
+        if (!updatedPost['imageUrl']) {
+            updatedPost['imageUrl'] = "https://picsum.photos/200?random=2";
+        }
+
         const post = await postsRepo.updatePost(postId, updatedPost);
+        if (!post) {
+            return res.status(404).json({ error: 'Post not found' });
+        }
         // TODO: Implement post update logic
         res.status(200).json({ ...post });
     } catch (error) {
