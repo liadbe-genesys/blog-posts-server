@@ -46,7 +46,7 @@ async function createPost(req, res) {
         const newPost = await postsRepo.createPost(post);
         res.status(201).json({ ...newPost });
     } catch (error) {
-        res.status(500).json({ error: `Failed to create post. Got error: ${JSON.stringify(getErrorDetails(error))}` });
+        res.status(500).json({ message: `Failed to create post. Got error: ${JSON.stringify(getErrorDetails(error))}` });
     }
 }
 
@@ -59,7 +59,7 @@ async function getPostById(req, res) {
         }
         res.status(200).json({ ...post });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to retrieve post' });
+        res.status(500).json({ message: 'Failed to retrieve post' });
     }
 }
 
@@ -69,7 +69,7 @@ async function deletePost(req, res) {
         const deleted = await postsRepo.deletePost(postId);
         res.status(200).json({ message: deleted ? 'Post deleted successfully': 'Post to delete not found' });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to delete post' });
+        res.status(500).json({ message: 'Failed to delete post' });
     }
 }
 
@@ -101,7 +101,7 @@ async function updatePost(req, res) {
         // TODO: Implement post update logic
         res.status(200).json({ ...post });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to update post' });
+        res.status(500).json({ message: 'Failed to update post' });
     }
 }
 
@@ -110,14 +110,14 @@ async function getAllPosts(req, res) {
         const posts = await postsRepo.getAllPosts();
         res.status(201).json([ ...posts ]);
     } catch (error) {
-        res.status(500).json({ error: `Failed to get all posts. Got error: ${getErrorDetails(error)}` });
+        res.status(500).json({ message: `Failed to get all posts. Got error: ${getErrorDetails(error)}` });
     }
 }
 
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).json({ error: 'Something went wrong!' });
+    res.status(500).json({ message: 'Something went wrong!' });
 });
 
 // Start the server
