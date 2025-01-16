@@ -96,6 +96,28 @@ class PostRepository {
         }
     }
 
+    async setFavorite(id, favorite) {
+        try {
+            const posts = await this.getAllPosts();
+            const index = posts.findIndex(post => post.id === parseInt(id));
+            
+            if (index === -1) {
+                return null;
+            }
+
+            posts[index] = {
+                ...posts[index],
+                favorite,
+                id: parseInt(id) // Ensure ID doesn't change
+            };
+
+            await this.savePosts(posts);
+            return posts[index];
+        } catch (error) {
+            throw new Error(`Failed to update post: ${JSON.stringify(this.getErrorDetails(error), null, 2)}`);
+        }
+    }
+
     async getAllPosts() {
         try {
             const fileContent = await fs.readFile(this.filePath, 'utf-8');
