@@ -19,6 +19,7 @@ app.post('/posts', createPost);
 app.get('/posts/:id', getPostById);
 app.delete('/posts/:id', deletePost);
 app.put('/posts/:id', updatePost);
+app.patch('/posts/:id', setFavorite);
 app.get('/posts', getAllPosts);
 
 // Route handler functions
@@ -95,6 +96,22 @@ async function updatePost(req, res) {
         }
 
         const post = await postsRepo.updatePost(postId, updatedPost);
+        if (!post) {
+            return res.status(404).json({ error: 'Post not found' });
+        }
+        // TODO: Implement post update logic
+        res.status(200).json({ ...post });
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to update post' });
+    }
+}
+
+async function setFavorite(req, res) {
+    try {
+        const postId = req.params.id;
+        const {favorite} = req.body;
+
+        const post = await postsRepo.setFavorite(postId, favorite);
         if (!post) {
             return res.status(404).json({ error: 'Post not found' });
         }
