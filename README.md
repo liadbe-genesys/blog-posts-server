@@ -55,3 +55,16 @@ Implement the API functions for the following endpoints:
 4. Invoke the PostRepository function to update the post, using the ID from the url, and the body of the request.
 5. If the post wasn't found, return a 404 status code with an appropriate message.
 6. Otherwise, return a 200 status code with the updated post object.
+
+## Additional Resources
+### Node.js
+Node is an open-source Javascript framework used for back-end development. It contains many features useful for building server applications.
+* https://nodejs.org/en/learn/getting-started/introduction-to-nodejs
+
+### HTTP Methods
+An overview of the different HTTP methods and what they're used for
+* https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
+
+### HTTP Status Codes
+An overview of all existing HTTP codes and what each one means
+* https://umbraco.com/knowledge-base/http-status-codes/
