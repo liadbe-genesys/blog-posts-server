@@ -29,7 +29,7 @@ async function getPostById(req, res) {
         2. If the post was found, return it with a 200 status code
         3. If it wasn't found, return a 404 status code with an appropriate message
     */
-   res.status(501).json( {message: 'This function is not implemented yet!'} );
+   res.status(501).json( {message: 'This function is not implemented yet.'} );
 }
 
 async function createPost(req, res) {
@@ -41,7 +41,7 @@ async function createPost(req, res) {
         4. If the "imageUrl" property doesn't exist, add a random image url to the parameters(e.g. "https://picsum.photos/200?random=2")
         5. Invoke the PostRepository function to create the post, and return a 201 status code with the created post as a response.
     */
-   res.status(501).json( {message: 'This function is not implemented yet!'} );
+   res.status(501).json( {message: 'This function is not implemented yet.'} );
 }
 
 async function deletePost(req, res) {
@@ -51,7 +51,7 @@ async function deletePost(req, res) {
         2. If the post was found, return it with a 200 status code
         3. If it wasn't found, return a 404 status code with an appropriate message
     */
-   res.status(501).json( {message: 'This function is not implemented yet!'} );
+   res.status(501).json( {message: 'This function is not implemented yet.'} );
 }
 
 async function updatePost(req, res) {
@@ -64,7 +64,7 @@ async function updatePost(req, res) {
         5. If the post wasn't found, return a 404 status code with an appropriate message.
         6. Otherwise, return a 200 status code with the updated post object.
     */
-   res.status(501).json( {message: 'This function is not implemented yet!'} );
+   res.status(501).json( {message: 'This function is not implemented yet.'} );
 }
 
 async function getAllPosts(req, res) {
@@ -88,10 +88,9 @@ app.listen(port, () => {
 });
 
 function getErrorDetails(error) {
-    return {
+    return JSON.stringify({
         message: error.message,
-        stack: error.stack,
         code: error.code, // Useful for file system errors
         name: error.name
-    };
+    });
 }
