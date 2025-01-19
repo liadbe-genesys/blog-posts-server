@@ -23,6 +23,10 @@ app.get('/posts', getAllPosts);
 
 // Route handler functions
 async function getPostById(req, res) {
+    
+    // This line extracts the "id" parameter from the request url   
+    const postId = req.params.id;
+    
     /* 
     TODO: Implement this function to do the following:
         1. Get the post by invoking the PostRepository function using the ID provided in the url.
@@ -33,6 +37,10 @@ async function getPostById(req, res) {
 }
 
 async function createPost(req, res) {
+    
+    // This line extracts the body of the request
+    const post = req.body;
+    
     /* 
     TODO: Implement this function to do the following:
         1. Extract the details of the post to create from the request body
