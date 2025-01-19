@@ -34,7 +34,7 @@ async function createPost(req, res) {
 
         if (missingFields.length > 0) {
             return res.status(400).json({
-                error: 'Missing required fields',
+                message: 'Missing required fields',
                 missingFields: missingFields
             });
         }
@@ -56,7 +56,7 @@ async function getPostById(req, res) {
         const postId = req.params.id;
         const post = await postsRepo.getPostById(postId);
         if (!post) {
-            return res.status(404).json({ error: 'Post not found' });
+            return res.status(404).json({ message: 'Post not found' });
         }
         res.status(200).json({ ...post });
     } catch (error) {
@@ -86,7 +86,7 @@ async function updatePost(req, res) {
 
         if (missingFields.length > 0) {
             return res.status(400).json({
-                error: 'Missing required fields',
+                message: 'Missing required fields',
                 missingFields: missingFields
             });
         }
@@ -97,7 +97,7 @@ async function updatePost(req, res) {
 
         const post = await postsRepo.updatePost(postId, updatedPost);
         if (!post) {
-            return res.status(404).json({ error: 'Post not found' });
+            return res.status(404).json({ message: 'Post not found' });
         }
         // TODO: Implement post update logic
         res.status(200).json({ ...post });
@@ -113,7 +113,7 @@ async function setFavorite(req, res) {
 
         const post = await postsRepo.setFavorite(postId, favorite);
         if (!post) {
-            return res.status(404).json({ error: 'Post not found' });
+            return res.status(404).json({ message: 'Post not found' });
         }
         // TODO: Implement post update logic
         res.status(200).json({ ...post });
@@ -125,7 +125,7 @@ async function setFavorite(req, res) {
 async function getAllPosts(req, res) {
     try {
         const posts = await postsRepo.getAllPosts();
-        res.status(201).json([ ...posts ]);
+        res.status(201).json(posts);
     } catch (error) {
         res.status(500).json({ message: `Failed to get all posts. Got error: ${getErrorDetails(error)}` });
     }
